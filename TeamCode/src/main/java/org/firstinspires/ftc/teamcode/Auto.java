@@ -11,7 +11,7 @@ public class Auto extends LinearOpMode {
     Hardware hw = Hardware.getInstance(this);
     private AprilTagWebcam aprilTagWebcam;
 
-
+        // yo gurt we havent said that in a while
 
     @Override
     public void runOpMode() {
