@@ -98,6 +98,16 @@ public class Hardware {
         backRight.setPower(power);
     }
 
+    public void rightSidePower(double power) {
+        frontRight.setPower(power);
+        backRight.setPower(power);
+    }
+
+    public void leftSidePower(double power) {
+        frontLeft.setPower(power);
+        backLeft.setPower(power);
+    }
+
     public void setTarget(int ticks) {
         frontLeft.setTargetPosition(ticks);
         frontRight.setTargetPosition(ticks);

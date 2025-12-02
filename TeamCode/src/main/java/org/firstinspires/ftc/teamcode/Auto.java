@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.Hardware;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.teamcode.Mechanics.AprilTagWebcam;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -26,9 +27,21 @@ public class Auto extends LinearOpMode {
         telemetry.addData("Mode", mode);
         telemetry.update();
 
+        double shootDistance = 48.0; // Shooting distance in inches
+
         waitForStart();
 
         while(opModeIsActive()) {
+            aprilTagWebcam.update();
+            AprilTagDetection id20 = aprilTagWebcam.getTagBySpecificId(20);
+            aprilTagWebcam.displayDetectionTelemetry(id20);
+            if (id20 != null && id20.ftcPose != null) {
+                double dx = id20.ftcPose.x;
+                double dy = id20.ftcPose.y;
+                double dz = id20.ftcPose.z;
+                double distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                telemetry.addData("Distance (in)", distance);
+            }
 
             switch(mode) {
                 case 1: // Blue Top
@@ -44,6 +57,7 @@ public class Auto extends LinearOpMode {
                     System.out.println("Hello World3");
                     break;
             }
+            aprilTagWebcam.displayDetectionTelemetry(id20);
 
             telemetry.update();
         }
@@ -53,18 +67,21 @@ public class Auto extends LinearOpMode {
         return 1;
     }
 
-    private void BlueTop() {
-        aprilTagWebcam.update();
-        AprilTagDetection id20 = aprilTagWebcam.getTagBySpecificId(20);
-        aprilTagWebcam.displayDetectionTelemetry(id20);
+    public void ballCollectBlue() {
+        while(something that I havent decided on yet) {
 
-        while(distance is less than not equal to yada yada yada) {
-            move backwards
+        // TODO GET A SENSOR INSIDE THE ROBOT
+        if(sensor does not detect ball in the thing) {
+            strafe left go forward and intake
+                    if(ball is in) {
+                make it go back to that ultimate position
+            }
         }
-        if(distance is equal to distance) {
-            shoot
         }
 
+    }
+    
+    public void ballCollectRed() { // Instead of left, we go right
         while(something that I havent decided on yet) {
 
         if(sensor does not detect ball in the thing) {
@@ -76,21 +93,71 @@ public class Auto extends LinearOpMode {
         }
     }
 
+    private void BlueTop() {
+        aprilTagWebcam.update();
+        AprilTagDetection id20 = aprilTagWebcam.getTagBySpecificId(20);
+        aprilTagWebcam.displayDetectionTelemetry(id20);
+
+        while(distance <= shootDistance) { // In inches
+            hw.setPower(-1);
+        }
+        if(distance == shootDistance) {
+            hw.setPower(0);
+            hw.shooterMotor.setPower(1);
+            sleep(2000); // TODO fix later
+        }
+
+        ballCollectBlue();
+    }
+
     private void RedTop() {
-        // same thing from the other one except opposite
+        aprilTagWebcam.update();
+        AprilTagDetection id24 = aprilTagWebcam.getTagBySpecificId(24);
+        aprilTagWebcam.displayDetectionTelemetry(id24);
+
+        while(distance <= shootDistance) { // In inches
+            hw.setPower(-1);
+        }
+        if(distance == shootDistance) {
+            hw.setPower(0);
+            hw.shooterMotor.setPower(1);
+            sleep(2000); // TODO fix later
+        }
+
+        ballCollectRed();
     }
 
+    // TODO THESE MIGHT BE WRONG BECAUSE OF THIS VIBE CODED SLOP
     private void BlueBottom() {
-        while(distance isnt distance) {
-            move
+        while(distance != shootDistance) {
+            hw.setPower(1);
         }
-        if(distance is distance) {
-            shoot
+        if(distance == shootDistance) {
+            hw.setPower(0);
+            sleep(250); // TODO adjust later
+            hw.rightSidePower(1);
+            sleep(500); // TODO adjust later
+            hw.shooterMotor.setPower(1);
+            sleep(2000); // TODO fix later
         }
-        And then do the collect ball thing from the other one
+
+        ballCollectBlue();
     }
 
+    // Fix this depending on where the robot is actually placed on the back, just in case it isn't what we think
     private void RedBottom() {
-        // same thing from the other one and I think we just copy the red top for the rest of it.
+        while(distance != shootDistance) { // Have to call distance because distance is going to be set as the robot distance from anything on the field
+            hw.setPower(1); // if the robot is using the intake as the front
+        }
+        if(distance == shootDistance) {
+            hw.setPower(0);
+            sleep(250); // TODO adjust later
+            hw.leftSidePower(1);
+            sleep(500); // TODO adjust later
+            hw.shooterMotor.setPower(1);
+            sleep(2000); // TODO fix later
+        }
+
+        ballCollectRed();
     }
 }
