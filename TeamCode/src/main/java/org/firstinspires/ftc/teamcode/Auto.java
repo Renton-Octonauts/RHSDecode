@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name= "Auto")
 public class Auto extends LinearOpMode {
-    public int mode = defaultMode(); // 1 is default
+    public int mode = defaultMode(); // 1 is default meaning we are blue
     Hardware hw = Hardware.getInstance(this);
+    private AprilTagWebcam aprilTagWebcam;
 
 
 
@@ -17,6 +19,10 @@ public class Auto extends LinearOpMode {
         hw.init(hardwareMap);
         hw.setToNoEncoder();
 
+        // Initialize webcam here (inside a method)
+        aprilTagWebcam = new AprilTagWebcam(); // or new AprilTagWebcam(this) depending on API
+        aprilTagWebcam.init(hardwareMap, telemetry); // if needed by that class
+
         telemetry.addData("Mode", mode);
         telemetry.update();
 
@@ -25,86 +31,66 @@ public class Auto extends LinearOpMode {
         while(opModeIsActive()) {
 
             switch(mode) {
-                case 1:
-                    redBlueShoot();
+                case 1: // Blue Top
+                    System.out.println("Hello World");
                     break;
-                case 2:
-                    redFarShoot();
+                case 2: // Red Top
+                    System.out.println("Hello world1");
                     break;
-                case 3:
-                    blueFarShoot();
+                case 3: // Blue Bottom
+                    System.out.println("Hello World2");
+                    break;
+                case 4: // Red Bottom
+                    System.out.println("Hello World3");
                     break;
             }
-            
+
             telemetry.update();
         }
     }
-
-    private void redBlueShoot() {
-        hw.setPower(1);
-        sleep(500);
-        hw.stopMotor();
-        hw.transLeft.setPower(1);
-        hw.transRight.setPower(1);
-        hw.shooterMotor.setPower(1);
-        sleep(15000);
-        hw.stopMotor();
-    }
-
-    private void redFarShoot() {
-        // So it goes with the intake and shooting facing forward
-
-        // IF WE DON'T CHANGE DRIVE TRAIN
-        hw.setPower(-1);
-//        hw.setPower(1);
-        sleep(750);
-        hw.stopMotor();
-        hw.strafeLeft(1.0);
-//        hw.strafeRight();
-        hw.stopMotor();
-        hw.setPower(-1);
-//        hw.setPower(1);
-        sleep(100);
-        hw.stopMotor();
-        // These might need to be reversed for the forward drive train
-        hw.frontLeft.setPower(1);
-        hw.backLeft.setPower(1);
-        sleep(250);
-        hw.stopMotor();
-        hw.transLeft.setPower(1);
-        hw.transRight.setPower(1);
-        hw.shooterMotor.setPower(1);
-        sleep(15000);
-        hw.stopMotor();
-    }
-
-    private void blueFarShoot() {
-        hw.setPower(-1);
-//        hw.setPower(1);
-        sleep(750);
-        hw.stopMotor();
-        hw.strafeRight(1.0);
-//        hw.strafeLeft();
-        hw.stopMotor();
-        hw.setPower(-1);
-//        hw.setPower(1);
-        sleep(100);
-        // These might need to be reversed for the forward drive train
-        hw.frontRight.setPower(1);
-        hw.backRight.setPower(1);
-        sleep(250);
-        hw.stopMotor();
-        hw.transLeft.setPower(1);
-        hw.transRight.setPower(1);
-        hw.shooterMotor.setPower(1);
-        sleep(15000);
-        hw.stopMotor();
-    }
-
 
     public int defaultMode() {
         return 1;
     }
 
+    private void BlueTop() {
+        aprilTagWebcam.update();
+        AprilTagDetection id20 = aprilTagWebcam.getTagBySpecificId(20);
+        aprilTagWebcam.displayDetectionTelemetry(id20);
 
+        while(distance is less than not equal to yada yada yada) {
+            move backwards
+        }
+        if(distance is equal to distance) {
+            shoot
+        }
+
+        while(something that I havent decided on yet) {
+
+        if(sensor does not detect ball in the thing) {
+            strafe left go forward and intake
+                    if(ball is in) {
+                make it go back to that ultimate position
+            }
+        }
+        }
+    }
+
+    private void RedTop() {
+        // same thing from the other one except opposite
+    }
+
+    private void BlueBottom() {
+        while(distance isnt distance) {
+            move
+        }
+        if(distance is distance) {
+            shoot
+        }
+        And then do the collect ball thing from the other one
+    }
+
+    private void RedBottom() {
+        // same thing from the other one and I think we just copy the red top for the rest of it.
+    }
 }
