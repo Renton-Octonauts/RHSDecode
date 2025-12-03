@@ -28,6 +28,7 @@ public class Auto extends LinearOpMode {
         telemetry.update();
 
         double shootDistance = 48.0; // Shooting distance in inches
+        boolean ballCollected = false; // If ball collection is finished
 
         waitForStart();
 
@@ -67,8 +68,9 @@ public class Auto extends LinearOpMode {
         return 1;
     }
 
-    public void ballCollectBlue() {
-        while(something that I havent decided on yet) {
+    public void ballCollectBlue() { // Collect balls from the blue side top 
+
+        while(!ballCollected) {
 
         // TODO GET A SENSOR INSIDE THE ROBOT
         if(sensor does not detect ball in the thing) {
@@ -94,6 +96,9 @@ public class Auto extends LinearOpMode {
     }
 
     private void BlueTop() {
+
+        // TODO Move back, shoot all preloaded balls, move back to a specific location which will be the same as the blue bottom when it's done shooting.
+
         aprilTagWebcam.update();
         AprilTagDetection id20 = aprilTagWebcam.getTagBySpecificId(20);
         aprilTagWebcam.displayDetectionTelemetry(id20);
@@ -111,6 +116,9 @@ public class Auto extends LinearOpMode {
     }
 
     private void RedTop() {
+
+        // TODO Move back, shoot all preloaded balls, move back to a specific location which will be the same as the red bottom when it's done shooting.
+
         aprilTagWebcam.update();
         AprilTagDetection id24 = aprilTagWebcam.getTagBySpecificId(24);
         aprilTagWebcam.displayDetectionTelemetry(id24);
@@ -129,6 +137,9 @@ public class Auto extends LinearOpMode {
 
     // TODO THESE MIGHT BE WRONG BECAUSE OF THIS VIBE CODED SLOP
     private void BlueBottom() {
+
+        // TODO Move up to goal post, shoot, then move back to a specific location which will be the same as the blue top when it's done shooting.
+
         while(distance != shootDistance) {
             hw.setPower(1);
         }
@@ -146,6 +157,9 @@ public class Auto extends LinearOpMode {
 
     // Fix this depending on where the robot is actually placed on the back, just in case it isn't what we think
     private void RedBottom() {
+
+        // TODO Move up to goal post, shoot, then move back to a specific location which will be the same as the red top when it's done shooting.
+
         while(distance != shootDistance) { // Have to call distance because distance is going to be set as the robot distance from anything on the field
             hw.setPower(1); // if the robot is using the intake as the front
         }
