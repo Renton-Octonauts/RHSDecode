@@ -6,3 +6,4 @@
 > The computer knows. God knows.”  
 >
 > — **Terry A. Davis (1969–2018), Creator of TempleOS**
+> We should really actually put something useful in here.
